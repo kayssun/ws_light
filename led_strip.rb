@@ -6,9 +6,6 @@ include PiPiper
 
 require './strip.rb'
 
-# TODO
-# - cancel led shut off when new motion is detected
-
 DEBUG = false
 
 strip = Strip.new
