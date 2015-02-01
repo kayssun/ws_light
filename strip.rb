@@ -102,7 +102,7 @@ class Strip
 		else
 			puts "bouncing right" if DEBUG
 			i = LENGTH/2 - i - 1
-			while i < (LENGTH/2) do
+			while i < (LENGTH/2 - 1) do
 				WS2801.set(@current_set[i+=1])
 			end
 		end
