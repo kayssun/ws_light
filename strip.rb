@@ -5,7 +5,7 @@ require './color.rb'
 
 class Strip
 
-	attr_accessor :direction, :last_event, :is_on, :state, :current_set
+	attr_accessor :direction, :last_event, :state, :current_set, :debug
 
 	LENGTH = 320
 	DIRECTION_NONE = 0
@@ -29,15 +29,10 @@ class Strip
 
 	def on(direction)
 		@last_event = Time.now
-		puts "Triggered event 'on': #{last_event.to_f}" if DEBUG
-		return if @is_on
-		@is_on = true
+		puts "triggered event 'on': #{last_event.to_f}" if DEBUG
+		return if @state != STATE_OFF
+
 		@direction = direction
-
-		# @is_on is set to true, so the bounce sequence is activated now
-		# nothing to do here
-		return if @state == STATE_SHUTTING_DOWN
-
 		@state = STATE_STARTING_UP
 
 		puts "starting write: #{(Time.now - last_event).to_f}" if DEBUG
@@ -52,19 +47,18 @@ class Strip
 			set = gradient_set(Color.random_from_set, Color.random_from_set)
 		end	
 		
-		write_set(set)
+		@state = write_set(set)
 
 		puts "finishing write: #{(Time.now - last_event).to_f}" if DEBUG
 	end
 
 	def off(direction = nil)
-		return unless @is_on
-		puts "Triggered event 'off': #{Time.now.to_f}" if DEBUG
+		return unless @state == STATE_ON
+		puts "triggered event 'off': #{Time.now.to_f}" if DEBUG
 		@state = STATE_SHUTTING_DOWN
-		@is_on = false
 		@direction = direction if direction
-		write_set(simple_set(Color.new), false)
-		puts "Finished shutting off: #{Time.now.to_f}" if DEBUG
+		@state = write_set(simple_set(Color.new), false)
+		puts "finished shutting off: #{Time.now.to_f}" if DEBUG
 	end
 
 	def shutdown
@@ -77,39 +71,43 @@ class Strip
 		if @direction == DIRECTION_RIGHT
 			(LENGTH/2).times do |i|
 				WS2801.set(set[i])
-				if on != @is_on
-					puts "Canceling shutdown."
-					bounce(i+1, DIRECTION_RIGHT)
-					return
+				# Check if timeout is still given
+				if @state == STATE_SHUTTING_DOWN and not timeout?
+					puts "canceling shutdown." if DEBUG
+					return bounce(i+1, DIRECTION_RIGHT)
 				end
 			end
 		elsif @direction == DIRECTION_LEFT
 			(LENGTH/2).times do |i|
 				WS2801.set(set[(LENGTH/2)-i-1])
-				if on != @is_on
-					puts "Canceling shutdown."
-					bounce(i+1, DIRECTION_LEFT)
-					return
+				# Check if timeout is still given
+				if @state == STATE_SHUTTING_DOWN and not timeout?
+					puts "canceling shutdown." if DEBUG
+					return bounce(i+1, DIRECTION_LEFT)
 				end
 			end
 		end
-		@state = on ? STATE_ON : STATE_OFF
+
+		on ? STATE_ON : STATE_OFF
 	end
 
 	def bounce(i, direction)
+		@last_event = Time.now
+
 		if direction == DIRECTION_RIGHT
-			puts "Bouncing left"
+			puts "bouncing left" if DEBUG
 			while i > -1 do
 				WS2801.set(@current_set[i-=1])
 			end
 		else
-			puts "Bouncing right"
+			puts "bouncing right" if DEBUG
 			i = LENGTH/2 - i - 1
 			while i < (LENGTH/2) do
 				WS2801.set(@current_set[i+=1])
 			end
 		end
-		@state = STATE_ON
+
+		STATE_ON
 	end
 
 	# red and blue are switched
@@ -194,7 +192,12 @@ class Strip
 	end
 
 	def check_timer
-		self.off if @last_event < (Time.now - TIMEOUT)
+		puts "state: #{@state}" if DEBUG
+		self.off if timeout?
+	end
+
+	def timeout?
+		@last_event < (Time.now - TIMEOUT)
 	end
 
 end
