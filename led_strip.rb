@@ -6,9 +6,10 @@ include PiPiper
 
 require './strip.rb'
 
-DEBUG = false
+DEBUG = true
 
 strip = Strip.new
+strip.debug = DEBUG
 
 pin_right = PiPiper::Pin.new(:pin => 22, :direction => :in)
 pin_left = PiPiper::Pin.new(:pin => 23, :direction => :in)

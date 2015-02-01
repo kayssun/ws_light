@@ -29,13 +29,13 @@ class Strip
 
 	def on(direction)
 		@last_event = Time.now
-		puts "triggered event 'on': #{last_event.to_f}" if DEBUG
+		puts "triggered event 'on': #{last_event.to_f}" if @debug
 		return if @state != STATE_OFF
 
 		@direction = direction
 		@state = STATE_STARTING_UP
 
-		puts "starting write: #{(Time.now - last_event).to_f}" if DEBUG
+		puts "starting write: #{(Time.now - last_event).to_f}" if @debug
 		
 		# 5% chance to generate rainbow or random colors
 		switch = rand(100)
@@ -49,16 +49,16 @@ class Strip
 		
 		@state = write_set(set)
 
-		puts "finishing write: #{(Time.now - last_event).to_f}" if DEBUG
+		puts "finishing write: #{(Time.now - last_event).to_f}" if @debug
 	end
 
 	def off(direction = nil)
 		return unless @state == STATE_ON
-		puts "triggered event 'off': #{Time.now.to_f}" if DEBUG
+		puts "triggered event 'off': #{Time.now.to_f}" if @debug
 		@state = STATE_SHUTTING_DOWN
 		@direction = direction if direction
 		@state = write_set(simple_set(Color.new), false)
-		puts "finished shutting off: #{Time.now.to_f}" if DEBUG
+		puts "finished shutting off: #{Time.now.to_f}" if @debug
 	end
 
 	def shutdown
@@ -73,7 +73,7 @@ class Strip
 				WS2801.set(set[i])
 				# Check if timeout is still given
 				if @state == STATE_SHUTTING_DOWN and not timeout?
-					puts "canceling shutdown." if DEBUG
+					puts "canceling shutdown." if @debug
 					return bounce(i+1, DIRECTION_RIGHT)
 				end
 			end
@@ -82,7 +82,7 @@ class Strip
 				WS2801.set(set[(LENGTH/2)-i-1])
 				# Check if timeout is still given
 				if @state == STATE_SHUTTING_DOWN and not timeout?
-					puts "canceling shutdown." if DEBUG
+					puts "canceling shutdown." if @debug
 					return bounce(i+1, DIRECTION_LEFT)
 				end
 			end
@@ -95,12 +95,12 @@ class Strip
 		@last_event = Time.now
 
 		if direction == DIRECTION_RIGHT
-			puts "bouncing left" if DEBUG
+			puts "bouncing left" if @debug
 			while i > -1 do
 				WS2801.set(@current_set[i-=1])
 			end
 		else
-			puts "bouncing right" if DEBUG
+			puts "bouncing right" if @debug
 			i = LENGTH/2 - i - 1
 			while i < (LENGTH/2 - 1) do
 				WS2801.set(@current_set[i+=1])
@@ -192,7 +192,7 @@ class Strip
 	end
 
 	def check_timer
-		puts "state: #{@state}" if DEBUG
+		puts "state: #{@state}" if @debug
 		self.off if timeout?
 	end
 
