@@ -203,7 +203,6 @@ class Strip
 	end
 
 	def check_timer
-		puts "state: #{@state}" if @debug
 		self.off if timeout?
 	end
 
