@@ -187,8 +187,11 @@ class Strip
 		WS2801.set(r: 0, g: 0, b: 0)
 	end
 
-	def between(from, to, i)
-		from + ((to - from) * i.to_f/(LENGTH.to_f/2)).to_i
+  def between(from, to, i, length = LENGTH/2)
+    color = from + ((to - from) * i.to_f/length.to_f).to_i
+    color = 255 if color > 255
+    color = 0 if color < 0
+    color
 	end
 
 	def check_timer
