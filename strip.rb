@@ -63,7 +63,9 @@ class Strip
 		puts "triggered event 'off': #{Time.now.to_f}" if @debug
 		@state = STATE_SHUTTING_DOWN
 		@direction = direction if direction
-		@state = write_set(simple_set(Color.new), false)
+    set = simple_set(Color.new)
+    set.shuffle! if rand(10) < 1
+    @state = write_set(set, false)
 		puts "finished shutting off: #{Time.now.to_f}" if @debug
 	end
 
