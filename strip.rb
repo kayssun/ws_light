@@ -3,6 +3,12 @@
 require 'ws2801'
 require './color.rb'
 
+# Ideas
+# - Animate rainbow
+# - Stars
+# - Fire?
+# - 
+
 class Strip
 
 	attr_accessor :direction, :last_event, :state, :current_set, :debug
