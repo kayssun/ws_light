@@ -31,6 +31,7 @@ class Strip
 		@listen_thread = Thread.new { while true do check_timer; sleep 1; end }
 		@last_event = Time.now - 3600 # set last event to a longer time ago
 		@state = STATE_OFF
+    @debug = false
 	end
 
 	def on(direction)
