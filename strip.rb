@@ -44,11 +44,15 @@ class Strip
 		puts "starting write: #{(Time.now - last_event).to_f}" if @debug
 		
 		# 5% chance to generate rainbow or random colors
+    fancy_sets = [
+      self.method(:rainbow_set),
+      self.method(:watermelon_set),
+      self.method(:random_set)
+    ]
 		switch = rand(100)
-		if switch > 94
-			set = rainbow_set
-		elsif switch > 89
-			set = random_set
+
+    if switch < 10
+      set = fancy_sets[rand(fancy_sets.length)].call
 		else
 			set = gradient_set(Color.random_from_set, Color.random_from_set)
 		end	
@@ -170,6 +174,47 @@ class Strip
 		end
 		preset
 	end
+
+  def watermelon_set
+    preset = []
+
+    length_red = (0.72 * LENGTH/2.0).to_i
+    length_red_to_white = (0.1 * LENGTH/2.0).to_i
+    length_white = (0.1 * LENGTH/2.0).to_i
+
+    (LENGTH/2).times do |i|
+      if i < length_red
+        preset << {
+          pixel: [i, LENGTH-1-i],
+          r: 0,
+          g: 0,
+          b: rand(25) < 1 ? 0 : 255
+        }
+      elsif i < length_red + length_red_to_white
+        preset << {
+          pixel: [i, LENGTH-1-i],
+          r: between(0, 255, i - length_red, length_red_to_white),
+          g: between(0, 255, i - length_red, length_red_to_white),
+          b: 255
+        }
+      elsif i < length_red + length_red_to_white + length_white
+        preset << {
+          pixel: [i, LENGTH-1-i],
+          r: 255,
+          g: 255,
+          b: 255
+        }
+      else
+        preset << {
+          pixel: [i, LENGTH-1-i],
+          r: 0,
+          g: 127,
+          b: 0
+        }
+      end
+    end
+    preset
+  end
 
 	def rainbow_set
 		frequency = 0.06 * (160.0 / LENGTH)
