@@ -244,7 +244,6 @@ class Strip
   def between(from, to, i, length = LENGTH/2)
     color = from + ((to - from) * i.to_f/length.to_f).to_i
     color = 255 if color > 255
-    color = 0 if color < 0
     color
 	end
 
