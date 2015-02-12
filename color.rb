@@ -25,7 +25,7 @@ class Color
 	end
 
 	def self.by_name(name)
-		color_values = Color::COLORS[name]
+    selected_color = Color::COLORS[name]
 		Color.new(selected_color[:r], selected_color[:g], selected_color[:b])
 	end
 
