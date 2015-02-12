@@ -248,6 +248,9 @@ class Strip
 	end
 
 	def check_timer
+    if @state == STATE_ON or @state == STATE_OFF
+      WS2801.write
+    end
 		self.off if timeout?
 	end
 
