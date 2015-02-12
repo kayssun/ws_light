@@ -86,7 +86,7 @@ class Strip
 				WS2801.set(set[i])
 				# Check if timeout is still given
 				if @state == STATE_SHUTTING_DOWN and not timeout?
-					puts "canceling shutdown." if @debug
+          puts 'canceling shutdown.' if @debug
 					return bounce(i+1, DIRECTION_RIGHT)
 				end
 			end
@@ -95,7 +95,7 @@ class Strip
 				WS2801.set(set[(LENGTH/2)-i-1])
 				# Check if timeout is still given
 				if @state == STATE_SHUTTING_DOWN and not timeout?
-					puts "canceling shutdown." if @debug
+          puts 'canceling shutdown.' if @debug
 					return bounce(i+1, DIRECTION_LEFT)
 				end
 			end
@@ -108,12 +108,12 @@ class Strip
 		@last_event = Time.now
 
 		if direction == DIRECTION_RIGHT
-			puts "bouncing left" if @debug
+      puts 'bouncing left' if @debug
 			while i > -1 do
 				WS2801.set(@current_set[i-=1])
 			end
 		else
-			puts "bouncing right" if @debug
+      puts 'bouncing right' if @debug
 			i = LENGTH/2 - i - 1
 			while i < (LENGTH/2 - 1) do
 				WS2801.set(@current_set[i+=1])
