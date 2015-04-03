@@ -1,6 +1,5 @@
 
-
-class Logger
+class SDLogger
 
   attr_accessor :entries, :interval, :entries, :debug, :filename
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'ws2801'
-require './color.rb'
+require 'color'
 
 # Ideas
 # - Animate rainbow
