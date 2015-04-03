@@ -4,12 +4,13 @@ require 'pi_piper'
 
 include PiPiper
 
-require './strip.rb'
-require './logger.rb'
+require 'bundler'
+require 'strip'
+require 'sd_logger'
 
 DEBUG = true
 
-logger = Logger.new
+logger = SDLogger.new
 logger.debug = DEBUG
 logger.filename = 'motion.log'
 logger.log 'Starting up'
@@ -21,7 +22,7 @@ Signal.trap('INT') {
   exit
 }
  
-# Trap `Kill `
+# Trap `kill `
 Signal.trap('TERM') {
   logger.log 'Shutting down'
   logger.write_log

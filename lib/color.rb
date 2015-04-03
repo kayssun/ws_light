@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 
 class Color
 	attr_accessor :r, :g, :b
@@ -15,23 +14,49 @@ class Color
 	}
 
 	def initialize(r=0, g=0, b=0)
-		@r = r
-		@g = g
-		@b = b
-	end
+		@r = r.to_i < 255 ? r.to_i : 255
+		@g = g.to_i < 255 ? g.to_i : 255
+		@b = b.to_i < 255 ? b.to_i : 255
+  end
+
+  def to_a
+    [@b, @g, @r]
+  end
+
+  def mix(other, ratio)
+    Color.new(
+        (@r * (1-ratio) + other.r * ratio).to_i,
+        (@g * (1-ratio) + other.r * ratio).to_i,
+        (@b * (1-ratio) + other.r * ratio).to_i
+    )
+  end
+
+  def mix!(other, ratio)
+    @r = (@r * (1-ratio) + other.r * ratio).to_i
+    @g = (@g * (1-ratio) + other.r * ratio).to_i
+    @b = (@b * (1-ratio) + other.r * ratio).to_i
+    self
+  end
 
 	def self.random
 		Color.new(rand(192), rand(192), rand(192))
 	end
 
 	def self.by_name(name)
-    selected_color = Color::COLORS[name]
-		Color.new(selected_color[:r], selected_color[:g], selected_color[:b])
+    if Color::COLORS[name]
+      selected_color = Color::COLORS[name]
+		  Color.new(selected_color[:r], selected_color[:g], selected_color[:b])
+    elsif name == :black
+      Color.new(0, 0, 0)
+    else
+      fail "Cannot find color #{name}"
+    end
 	end
 
 	def self.random_from_set
 		color_values = Color::COLORS.values
 		selected_color = color_values[rand(color_values.length)]
 		Color.new(selected_color[:r], selected_color[:g], selected_color[:b])
-	end
+  end
+
 end
