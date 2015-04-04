@@ -9,6 +9,7 @@ require 'ws_light/set/color_set'
 require 'ws_light/set/gradient_set'
 require 'ws_light/set/random_set'
 require 'ws_light/set/rainbow_set'
+require 'ws_light/set/strawberry_set'
 
 # Ideas
 # - Stars
@@ -63,6 +64,8 @@ module WSLight
         set = Set::RainbowSet.new
       when 4..6
         set = Set::RandomSet.new
+      when 7..9
+        set = Set::StrawberrySet.new
       else
         set = Set::GradientSet.new
         set.color_from = Color.random_from_set
