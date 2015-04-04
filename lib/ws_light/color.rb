@@ -14,9 +14,12 @@ module WSLight
     }
 
     def initialize(r=0, g=0, b=0)
-      @r = r.to_i < 255 ? r.to_i : 255
-      @g = g.to_i < 255 ? g.to_i : 255
-      @b = b.to_i < 255 ? b.to_i : 255
+      @r = r > 255 ? 255 : r.to_i
+      @g = g > 255 ? 255 : g.to_i
+      @b = b > 255 ? 255 : b.to_i
+      @r = @r < 0 ? 0 : @r
+      @g = @g < 0 ? 0 : @g
+      @b = @b < 0 ? 0 : @b
     end
 
     def to_a
