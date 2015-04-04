@@ -26,12 +26,13 @@ class RainbowSet < ColorSet
     set
   end
 
-  def pixel(number, frame = @frame_count)
+  def pixel(number)
     number = @length - number if number >= @length
+    x = @frequency*(number+@frame_count)
     Color.new(
-        (Math.sin(@frequency*(number+frame) + 0)**2 * 127),
-        (Math.sin(@frequency*(number+frame) + 2.0*Math::PI/3.0)**2 * 127),
-        (Math.sin(@frequency*(number+frame) + 4.0*Math::PI/3.0)**2 * 127)
+        (Math.sin(x)**2 * 127),
+        (Math.sin(x + 2.0*Math::PI/3.0)**2 * 127),
+        (Math.sin(x + 4.0*Math::PI/3.0)**2 * 127)
     )
   end
 
