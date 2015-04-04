@@ -26,15 +26,15 @@ class Color
   def mix(other, ratio)
     Color.new(
         (@r * (1-ratio) + other.r * ratio).to_i,
-        (@g * (1-ratio) + other.r * ratio).to_i,
-        (@b * (1-ratio) + other.r * ratio).to_i
+        (@g * (1-ratio) + other.g * ratio).to_i,
+        (@b * (1-ratio) + other.b * ratio).to_i
     )
   end
 
   def mix!(other, ratio)
     @r = (@r * (1-ratio) + other.r * ratio).to_i
-    @g = (@g * (1-ratio) + other.r * ratio).to_i
-    @b = (@b * (1-ratio) + other.r * ratio).to_i
+    @g = (@g * (1-ratio) + other.g * ratio).to_i
+    @b = (@b * (1-ratio) + other.b * ratio).to_i
     self
   end
 
