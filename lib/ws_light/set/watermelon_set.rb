@@ -4,7 +4,7 @@ module WSLight
   module Set
     # Creates a watermelon set, some green, some white, lots of red with a few red dots
     class WatermelonSet < ColorSet
-      def frame
+      def create_frame
         set = []
 
         length_red = (0.72 * @length).to_i
@@ -27,10 +27,14 @@ module WSLight
           end
         end
 
-        set
+        type == :double ? set + set.reverse : set
       end
 
-      def pixel(number, _frame = 0)
+      def frame
+        @set ||= create_frame
+      end
+
+      def pixel(number)
         frame[number]
       end
     end
