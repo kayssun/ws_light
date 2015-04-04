@@ -6,11 +6,17 @@ class GradientSet < ColorSet
 
   attr_accessor :color_from, :color_to
 
+  def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
+    super(length, type)
+    @color_from = Color.new(0,0,0)
+    @color_to = Color.new(255,255,255)
+  end
+
   def frame
-    @color_from = Color.new(0,0,0) unless @color_from
-    @color_to = Color.new(255,255,255) unless @color_to
+    @set ||= create_frame
+  end
 
-
+  def create_frame
     set = []
     @length.times do |i|
       set << pixel(i)
