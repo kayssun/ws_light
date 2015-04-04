@@ -11,6 +11,7 @@ require 'ws_light/set/random_set'
 require 'ws_light/set/rainbow_set'
 require 'ws_light/set/strawberry_set'
 require 'ws_light/set/watermelon_set'
+require 'ws_light/set/semolina_set'
 
 # Ideas
 # - Stars
@@ -69,6 +70,8 @@ module WSLight
         set = Set::StrawberrySet.new
       when 10..12
         set = Set::WatermelonSet.new
+      when 13..15
+        set = Set::SemolinaSet.new
       else
         set = Set::GradientSet.new
         set.color_from = Color.random_from_set
