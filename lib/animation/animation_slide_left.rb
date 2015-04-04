@@ -4,7 +4,7 @@ require 'animation/animation_base'
 class AnimationSlideLeft < AnimationBase
 
   def frames
-    set_from.length
+    @set_from.length + 1 # one for each led plus one for all zero
   end
 
   def frame(count)
