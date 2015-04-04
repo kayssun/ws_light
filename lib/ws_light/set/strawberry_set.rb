@@ -26,7 +26,7 @@ module WSLight
 
         set = sprinkle_nuts(set)
 
-        set
+        type == :double ? set + set.reverse : set
       end
 
       def sprinkle_nuts(set)
@@ -36,10 +36,11 @@ module WSLight
           distance += 15 + rand(5)
           set[distance] = COLOR_NUT
         end
+
         set
       end
 
-      def pixel(number, _frame = 0)
+      def pixel(number)
         frame[number]
       end
     end
