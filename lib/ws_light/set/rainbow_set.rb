@@ -1,4 +1,4 @@
-require 'set/color_set'
+require 'ws_light/set/color_set'
 
 module WSLight
   module Set

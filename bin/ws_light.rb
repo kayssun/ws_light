@@ -5,8 +5,8 @@ require 'pi_piper'
 include PiPiper
 
 require 'bundler'
-require 'strip'
-require 'sd_logger'
+require 'ws_light/strip'
+require 'ws_light/sd_logger'
 
 DEBUG = true
 

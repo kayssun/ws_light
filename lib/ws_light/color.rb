@@ -1,4 +1,3 @@
-
 module WSLight
   class Color
     attr_accessor :r, :g, :b

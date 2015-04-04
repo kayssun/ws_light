@@ -1,4 +1,4 @@
-require 'animation/animation_base'
+require 'ws_light/animation/animation_base'
 
 module WSLight
   module Animation

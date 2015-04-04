@@ -1,14 +1,14 @@
 require 'ws2801'
-require 'color'
+require 'ws_light/color'
 require 'pp'
 
-require 'animation/animation_slide_left'
-require 'animation/animation_slide_right'
+require 'ws_light/animation/animation_slide_left'
+require 'ws_light/animation/animation_slide_right'
 
-require 'set/color_set'
-require 'set/gradient_set'
-require 'set/random_set'
-require 'set/rainbow_set'
+require 'ws_light/set/color_set'
+require 'ws_light/set/gradient_set'
+require 'ws_light/set/random_set'
+require 'ws_light/set/rainbow_set'
 
 # Ideas
 # - Stars
