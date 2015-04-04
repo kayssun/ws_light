@@ -4,6 +4,7 @@ require 'pp'
 
 require 'ws_light/animation/animation_slide_left'
 require 'ws_light/animation/animation_slide_right'
+require 'ws_light/animation/fade_animation'
 
 require 'ws_light/set/color_set'
 require 'ws_light/set/gradient_set'
@@ -12,6 +13,7 @@ require 'ws_light/set/rainbow_set'
 require 'ws_light/set/strawberry_set'
 require 'ws_light/set/watermelon_set'
 require 'ws_light/set/semolina_set'
+require 'ws_light/set/star_set'
 
 # Ideas
 # - Stars
@@ -47,7 +49,7 @@ module WSLight
       @state = STATE_OFF
       @debug = false
       @current_set = Set::ColorSet.new
-      @current_set.color = Color.by_name :black
+      @current_set.color = Color.new(0,0,0)
     end
 
     def on(direction)
@@ -78,9 +80,12 @@ module WSLight
         set.color_to = Color.random_from_set
       end
 
+      set = Set::StarSet.new if night?
+
       puts "Set #{set.class}" if @debug
 
-      animation = animation_for(direction).new(@current_set, set)
+      #animation = animation_for(direction).new(@current_set, set)
+      animation = Animation::FadeAnimation.new(@current_set, set)
 
       animate(animation)
       @current_set = set
@@ -115,6 +120,8 @@ module WSLight
     end
 
     def animation_for(direction)
+      return Animation::FadeAnimation if night?
+
       if direction == DIRECTION_LEFT
         Animation::AnimationSlideLeft
       else
@@ -155,6 +162,11 @@ module WSLight
         sleep 1.0/FRAMES_PER_SECOND.to_f
         i += 1
       end
+    end
+
+    def night?
+      time = Time.now
+      time.hour > 22 || time.hour < 6
     end
 
     def shutdown
