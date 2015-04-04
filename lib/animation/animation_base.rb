@@ -1,4 +1,3 @@
-
 module WSLight
   module Animation
     # Base class for all animations, defines common methods

@@ -1,4 +1,3 @@
-
 require 'animation/animation_base'
 
 module WSLight

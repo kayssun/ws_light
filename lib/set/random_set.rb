@@ -1,5 +1,3 @@
-
-require 'color'
 require 'set/color_set'
 
 module WSLight
