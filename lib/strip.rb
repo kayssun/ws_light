@@ -79,7 +79,8 @@ class Strip
 
     @state = STATE_ON
 
-    show(@current_set, animation.frames)
+    # Move show() into background, so we can accept new events on the main thread
+    Thread.new { show(@current_set, animation.frames) }
   end
 
   def off(direction = nil)
