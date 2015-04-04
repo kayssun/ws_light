@@ -7,6 +7,9 @@ class RainbowSet < ColorSet
   def frame
     @frame_count += 1
     @frequency = Math::PI / @length
+  def next_frame
+    @frame_count += 1
+  end
     set = []
 
     @length.times do |i|

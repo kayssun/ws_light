@@ -28,6 +28,10 @@ class ColorSet
     set
   end
 
+  def next_frame
+    # reimplement if necessary, please :)
+  end
+
   def pixel(_number, _frame = 0)
     @color
   end
