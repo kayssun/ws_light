@@ -9,7 +9,7 @@ class RandomSet < ColorSet
   end
 
   def pixel(number, _frame = 0)
-    @set[number]
+    frame[number]
   end
 
   def generate_set
