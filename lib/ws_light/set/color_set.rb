@@ -11,8 +11,8 @@ module WSLight
 
       def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
         @length = length
-        @full_length = (@type == :double ? @length * 2 : @length)
         @type = type
+        @full_length = (@type == :double ? @length * 2 : @length)
         @color = Color.random
         @frame_count = 0
         init
