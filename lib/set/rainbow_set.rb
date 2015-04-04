@@ -4,12 +4,17 @@ require 'set/color_set'
 
 class RainbowSet < ColorSet
 
-  def frame
-    @frame_count += 1
+  def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
+    super(length, type)
     @frequency = Math::PI / @length
+  end
+
   def next_frame
     @frame_count += 1
   end
+
+  def frame
+    next_frame
     set = []
 
     @length.times do |i|
@@ -17,6 +22,7 @@ class RainbowSet < ColorSet
     end
 
     set += set.reverse if type == :double
+
     set
   end
 
