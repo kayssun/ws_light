@@ -7,7 +7,7 @@ module WSLight
       DEFAULT_LENGTH = 160
       DEFAULT_TYPE = :double
 
-      attr_accessor :type, :length, :color
+      attr_accessor :type, :length, :color, :full_length
 
       def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
         @length = length
