@@ -16,7 +16,7 @@ module WSLight
 
         @length.times do |i|
           if i < length_red
-            set << Color.new(0, 0, (rand(25) < 1 ? 0 : 255))
+            set << Color.new((rand(25) < 1 ? 0 : 255), 0, 0)
           elsif i < length_red + length_red_to_white
             ratio = (i - length_red) / (length_red + length_red_to_white)
             set << red.mix(white, ratio)
