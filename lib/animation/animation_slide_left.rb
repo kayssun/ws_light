@@ -11,7 +11,8 @@ class AnimationSlideLeft < AnimationBase
     set = []
     reverse_set = []
 
-    count += 1
+    @set_from.next_frame
+    @set_to.next_frame
 
     (set_from.length - count).times do |i|
       set << set_from.pixel(i)
