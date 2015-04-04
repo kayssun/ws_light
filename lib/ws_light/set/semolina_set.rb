@@ -11,7 +11,6 @@ module WSLight
 
       def init
         @raspberries = []
-        @full_length = (@type == :double ? @length * 2 : @length)
 
         while @raspberries.size < RASPBERRY_COUNT do
           position = rand(@full_length)
