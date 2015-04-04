@@ -11,19 +11,22 @@ module WSLight
 
       def frame(count)
         set = []
+        reverse_set = []
 
         @set_from.next_frame
         @set_to.next_frame
 
         count.times do |i|
           set << set_to.pixel(i)
+          reverse_set << set_to.pixel((set_from.length * 2) - 1 - i)
         end
 
         (set_from.length - count).times do |i|
           set << set_from.pixel(i + count)
+          reverse_set << set_from.pixel((set_from.length * 2) - count - 1 - i)
         end
 
-        set += set.reverse if set_from.type == :double
+        set += reverse_set.reverse if set_from.type == :double
 
         set
       end
