@@ -6,8 +6,7 @@ module WSLight
     class GradientSet < ColorSet
       attr_accessor :color_from, :color_to
 
-      def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
-        super(length, type)
+      def init
         @color_from = Color.new(0,0,0)
         @color_to = Color.new(255,255,255)
       end

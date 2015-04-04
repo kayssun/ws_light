@@ -4,8 +4,7 @@ module WSLight
   module Set
     # Creates a moving rainbow (actually a color circle)
     class RainbowSet < ColorSet
-      def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
-        super(length, type)
+      def init
         @frequency = Math::PI / @length
       end
 

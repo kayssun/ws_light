@@ -14,6 +14,7 @@ module WSLight
         @type = type
         @color = Color.random
         @frame_count = 0
+        init
       end
 
       def frame_data
@@ -35,6 +36,10 @@ module WSLight
 
       def pixel(_number, _frame = 0)
         @color
+      end
+
+      def init
+        # do some initializing stuff here
       end
     end
   end
