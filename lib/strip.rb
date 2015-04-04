@@ -118,10 +118,9 @@ class Strip
     beginning_state = @state
 
     animation.frames.times do |i|
-      WS2801.strip(animation.frame_data(i))
+      WS2801.strip(animation.frame_data(current_frame = i))
       WS2801.write
       sleep (1.0/animation.frames_per_second) if animation.frames_per_second
-      current_frame = i
       break if @state != beginning_state # Reverse shutting off when a new event is triggered
     end
 
