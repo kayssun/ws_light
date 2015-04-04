@@ -127,7 +127,7 @@ class Strip
     # This is run when the animation is reversed
     if (current_frame + 1) < animation.frames
       current_frame.times do |i|
-        WS2801.strip(animation.frame_data(current_frame - i))
+        WS2801.strip(animation.frame_data(current_frame - i - 1))
         WS2801.write
         sleep (1.0/animation.frames_per_second) if animation.frames_per_second
       end
