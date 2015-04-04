@@ -3,9 +3,12 @@ require 'color'
 
 class ColorSet
 
+  DEFAULT_LENGTH = 160
+  DEFAULT_TYPE = :double
+
   attr_accessor :type, :length, :color
 
-  def initialize(length = 160, type = :double)
+  def initialize(length = DEFAULT_LENGTH, type = DEFAULT_TYPE)
     @length = length
     @type = type
     @color = Color.random
