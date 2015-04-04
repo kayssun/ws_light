@@ -67,7 +67,6 @@ class Strip
       set = GradientSet.new
       set.color_from = Color.random_from_set
       set.color_to = Color.random_from_set
-      puts "Created set with colors #{set.color_from.inspect} to #{set.color_to.inspect}"
     end
 
     puts "Set #{set.class}" if @debug
@@ -144,8 +143,6 @@ class Strip
     i = start_frame
     while @state == current_state
       WS2801.strip(set.frame_data)
-      puts "Length: #{set.frame_data.length}" if i==start_frame
-      #pp set.frame_data if i==start_frame
       WS2801.write
       sleep 1.0/FRAMES_PER_SECOND.to_f
       i += 1
