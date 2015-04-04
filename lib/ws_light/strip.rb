@@ -2,8 +2,8 @@ require 'ws2801'
 require 'ws_light/color'
 require 'pp'
 
-require 'ws_light/animation/animation_slide_left'
-require 'ws_light/animation/animation_slide_right'
+require 'ws_light/animation/slide_left_animation'
+require 'ws_light/animation/slide_right_animation'
 require 'ws_light/animation/fade_animation'
 
 require 'ws_light/set/color_set'
@@ -16,9 +16,7 @@ require 'ws_light/set/semolina_set'
 require 'ws_light/set/star_set'
 
 # Ideas
-# - Stars
 # - Fire?
-# - 
 
 module WSLight
   # Controls the led strip
@@ -123,9 +121,9 @@ module WSLight
       return Animation::FadeAnimation if night?
 
       if direction == DIRECTION_LEFT
-        Animation::AnimationSlideLeft
+        Animation::SlideLeftAnimation
       else
-        Animation::AnimationSlideRight
+        Animation::SlideRightAnimation
       end
     end
 

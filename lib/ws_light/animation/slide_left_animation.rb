@@ -1,9 +1,9 @@
-require 'ws_light/animation/animation_base'
+require 'ws_light/animation/base_animation'
 
 module WSLight
   module Animation
     # Slides from one set to another from left to right (obviously depending on the hardware setup)
-    class AnimationSlideLeft < AnimationBase
+    class SlideLeftAnimation < BaseAnimation
       def frames
         @set_from.length + 1 # one for each led plus one for all zero
       end

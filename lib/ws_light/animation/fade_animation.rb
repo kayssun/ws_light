@@ -1,9 +1,9 @@
-require 'ws_light/animation/animation_base'
+require 'ws_light/animation/base_animation'
 
 module WSLight
   module Animation
     # Slides from one set to another from left to right (obviously depending on the hardware setup)
-    class FadeAnimation < AnimationBase
+    class FadeAnimation < BaseAnimation
       FADE_DURATION = 50
 
       def frames

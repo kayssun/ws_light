@@ -1,7 +1,7 @@
 module WSLight
   module Animation
     # Base class for all animations, defines common methods
-    class AnimationBase
+    class BaseAnimation
       attr_accessor :set_from, :set_to, :type
 
       def initialize(set_from, set_to)
