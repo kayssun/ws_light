@@ -82,9 +82,8 @@ module WSLight
 
       puts "Set #{set.class}" if @debug
 
-      #animation = animation_for(direction).new(@current_set, set)
-      animation = Animation::FadeAnimation.new(@current_set, set)
-
+      animation = animation_for(direction).new(@current_set, set)
+      
       animate(animation)
       @current_set = set
 
