@@ -1,6 +1,9 @@
 require 'ws2801'
 require 'ws_light/color'
 require 'pp'
+require 'date'
+require 'json'
+require 'open-uri'
 
 require 'ws_light/animation/slide_left_animation'
 require 'ws_light/animation/slide_right_animation'
@@ -14,6 +17,8 @@ require 'ws_light/set/strawberry_set'
 require 'ws_light/set/watermelon_set'
 require 'ws_light/set/semolina_set'
 require 'ws_light/set/star_set'
+
+
 
 # Ideas
 # - Fire?
@@ -36,11 +41,14 @@ module WSLight
     STATE_STARTING_UP = :state_starting_up
     STATE_SHUTTING_DOWN = :state_shutting_down
 
+    WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'
+
     FRAMES_PER_SECOND = 25
 
     def initialize
       WS2801.length(Strip::TYPE == :double ? Strip::LENGTH * 2 : Strip::LENGTH)
       WS2801.autowrite(true)
+      update_daylight
       self_test
       @listen_thread = Thread.new { while true do check_timer; sleep 0.5; end }
       @last_event = Time.now - 3600 # set last event to a longer time ago
@@ -83,7 +91,7 @@ module WSLight
       puts "Set #{set.class}" if @debug
 
       animation = animation_for(direction).new(@current_set, set)
-      
+
       animate(animation)
       @current_set = set
 
@@ -163,7 +171,20 @@ module WSLight
 
     def night?
       time = Time.now
-      time.hour > 22 || time.hour < 6
+      time.to_i < (@daylight[:start] - 3600) || time.to_i > (@daylight[:end] + 3600)
+    end
+
+    # Gets the sunset/sunrise data
+    # this might get out of sync when the clock is not set correctly
+    # anyway, one day off is not a problem :)
+    def update_daylight
+      data = JSON.parse(open(WEATHER_URL).read)
+      @daylight = {
+        start: data['sys']['sunrise'].to_i,
+        end: data['sys']['sunrise'].to_i,
+        day: Time.now.day
+      }
+      pp @daylight
     end
 
     def shutdown
@@ -182,6 +203,7 @@ module WSLight
 
     def check_timer
       WS2801.set(r: 0, g: 0, b: 0) if @state == STATE_OFF
+      update_daylight if @daylight[:day] != Time.now.day
       off if timeout?
     end
 
