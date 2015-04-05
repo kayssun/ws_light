@@ -21,13 +21,13 @@ module WSLight
           set << pixel(i)
         end
 
-        set += set.reverse if type == :double
+        set += set.reverse if type == :double # this should be faster than generating the pixel one after another
 
         set
       end
 
-      def pixel(number, _frame = 0)
-        number = @length - number if number >= @length
+      def pixel(number)
+        number = @full_length - 1 - number if number >= @length
         @color_from.mix(@color_to, number.to_f/(@length-1))
       end
     end
