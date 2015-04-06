@@ -181,7 +181,7 @@ module WSLight
       data = JSON.parse(open(WEATHER_URL).read)
       @daylight = {
         start: data['sys']['sunrise'].to_i,
-        end: data['sys']['sunrise'].to_i,
+        end: data['sys']['sunset'].to_i,
         day: Time.now.day
       }
       pp @daylight
