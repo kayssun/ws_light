@@ -119,6 +119,7 @@ module WSLight
         @current_set = set
       else
         @state = STATE_ON
+        Thread.new { show(@current_set, animation.frames) }
       end
 
       puts "finished shutting off: #{Time.now.to_f}" if @debug
