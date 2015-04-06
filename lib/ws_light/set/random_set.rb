@@ -13,9 +13,8 @@ module WSLight
       end
 
       def generate_set
-        length = type == :double ? Strip::LENGTH * 2 : Strip::LENGTH
         set = []
-        length.times do
+        @full_length.times do
           set << Color.random
         end
         set
