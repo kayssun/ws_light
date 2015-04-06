@@ -203,7 +203,9 @@ module WSLight
 
     def check_timer
       WS2801.set(r: 0, g: 0, b: 0) if @state == STATE_OFF
-      update_daylight if @daylight[:day] != Time.now.day
+      # Test after 2 a.m. to make sure we can the correct date even if our time is slightly off
+      time = Time.now
+      update_daylight if @daylight[:day] != time.day && time.hour > 1
       off if timeout?
     end
 
