@@ -1,5 +1,21 @@
 #!/usr/bin/env ruby
 
+DEBUG = true
+
+if ARGV[0] && ARGV[0]=='-b'
+  case ARGV[1]
+  when 'set'
+    require 'ws_light/benchmark/set_benchmark'
+  when 'animation'
+    require 'ws_light/benchmark/animation_benchmark'
+  when 'ws2801'
+    require 'ws_light/benchmark/ws2801_benchmark'
+  else
+    puts 'Available benchmarks: set, animation, ws2801'
+  end
+  exit
+end
+
 require 'pi_piper'
 
 include PiPiper
@@ -7,8 +23,6 @@ include PiPiper
 require 'bundler'
 require 'ws_light/strip'
 require 'ws_light/sd_logger'
-
-DEBUG = true
 
 logger = WSLight::SDLogger.new
 logger.debug = DEBUG
