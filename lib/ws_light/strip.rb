@@ -22,6 +22,7 @@ require 'ws_light/set/star_set'
 
 # Ideas
 # - Fire?
+# Config file
 
 module WSLight
   # Controls the led strip
@@ -35,12 +36,7 @@ module WSLight
     DIRECTION_LEFT = 1
     DIRECTION_RIGHT = 2
     TIMEOUT = 12
-
-    STATE_OFF = :state_off
-    STATE_ON = :state_on
-    STATE_STARTING_UP = :state_starting_up
-    STATE_SHUTTING_DOWN = :state_shutting_down
-
+    
     WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'
 
     FRAMES_PER_SECOND = 25
@@ -52,7 +48,7 @@ module WSLight
       self_test
       @listen_thread = Thread.new { while true do check_timer; sleep 0.5; end }
       @last_event = Time.now - 3600 # set last event to a longer time ago
-      @state = STATE_OFF
+      @state = :state_off
       @debug = false
       @current_set = Set::ColorSet.new
       @current_set.color = Color.new(0,0,0)
@@ -61,13 +57,13 @@ module WSLight
     def on(direction)
       @last_event = Time.now
       puts "triggered event 'on': #{last_event.to_f} from state #{@state}" if @debug
-      @state = STATE_STARTING_UP if @state == STATE_SHUTTING_DOWN
-      return if @state != STATE_OFF
+      @state = :state_starting_up if @state == :state_shutting_down
+      return if @state != :state_off
 
       puts 'Loading a new set...' if @debug
 
       @direction = direction
-      @state = STATE_STARTING_UP
+      @state = :state_starting_up
 
       case rand(100)
       when 0..3
@@ -95,7 +91,7 @@ module WSLight
       animate(animation)
       @current_set = set
 
-      @state = STATE_ON
+      @state = :state_on
 
       # Move show() into background, so we can accept new events on the main thread
       Thread.new { show(@current_set, animation.frames) }
@@ -103,9 +99,9 @@ module WSLight
 
     def off(direction = nil)
       puts "triggered event 'off': #{Time.now.to_f} during state #{@state}" if @debug
-      return if @state != STATE_ON
+      return if @state != :state_on
 
-      @state = STATE_SHUTTING_DOWN
+      @state = :state_shutting_down
       sleep 0.2
       @direction = direction if direction
 
@@ -115,10 +111,10 @@ module WSLight
       animation = animation_for(@direction).new(@current_set, set)
 
       if animate(animation)
-        @state = STATE_OFF
+        @state = :state_off
         @current_set = set
       else
-        @state = STATE_ON
+        @state = :state_on
         Thread.new { show(@current_set, animation.frames) }
       end
 
@@ -203,7 +199,7 @@ module WSLight
     end
 
     def check_timer
-      WS2801.set(r: 0, g: 0, b: 0) if @state == STATE_OFF
+      WS2801.set(r: 0, g: 0, b: 0) if @state == :state_off
       # Test after 2 a.m. to make sure we can the correct date even if our time is slightly off
       time = Time.now
       update_daylight if @daylight[:day] != time.day && time.hour > 1
