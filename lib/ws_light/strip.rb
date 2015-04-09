@@ -41,7 +41,6 @@ module WSLight
     def initialize
       WS2801.length(Strip::TYPE == :double ? Strip::LENGTH * 2 : Strip::LENGTH)
       WS2801.autowrite(true)
-      update_daylight
       self_test
       @listen_thread = Thread.new { while true do check_timer; sleep 0.5; end }
       @last_event = Time.now - 3600 # set last event to a longer time ago
@@ -165,20 +164,7 @@ module WSLight
 
     def night?
       time = Time.now
-      time.to_i < (@daylight[:start] - 3600) || time.to_i > (@daylight[:end] + 3600)
-    end
-
-    # Gets the sunset/sunrise data
-    # this might get out of sync when the clock is not set correctly
-    # anyway, one day off is not a problem :)
-    def update_daylight
-      data = JSON.parse(open(WEATHER_URL).read)
-      @daylight = {
-        start: data['sys']['sunrise'].to_i,
-        end: data['sys']['sunset'].to_i,
-        day: Time.now.day
-      }
-      pp @daylight
+      time.hour > 22 || time.hour < 6
     end
 
     def shutdown
@@ -197,9 +183,6 @@ module WSLight
 
     def check_timer
       WS2801.set(r: 0, g: 0, b: 0) if @state == :state_off
-      # Test after 2 a.m. to make sure we can the correct date even if our time is slightly off
-      time = Time.now
-      update_daylight if @daylight[:day] != time.day && time.hour > 1
       off if timeout?
     end
 
