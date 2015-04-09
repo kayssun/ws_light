@@ -32,9 +32,6 @@ module WSLight
     LENGTH = 160
     TYPE = :double
 
-    DIRECTION_NONE = 0
-    DIRECTION_LEFT = 1
-    DIRECTION_RIGHT = 2
     TIMEOUT = 12
     
     WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'
@@ -124,7 +121,7 @@ module WSLight
     def animation_for(direction)
       return Animation::FadeAnimation if night?
 
-      if direction == DIRECTION_LEFT
+      if direction == :direction_left
         Animation::SlideLeftAnimation
       else
         Animation::SlideRightAnimation

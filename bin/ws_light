@@ -51,18 +51,18 @@ pin_left = PiPiper::Pin.new(:pin => 23, :direction => :in)
 
 after :pin => 23, :goes => :high do
   logger.log('Motion detected: RIGHT')
-  strip.on(WSLight::Strip::DIRECTION_RIGHT)
+  strip.on(:direction_right)
   while pin_right.on?
-  	strip.on(WSLight::Strip::DIRECTION_RIGHT)
+  	strip.on(:direction_right)
   	sleep 1
   end
 end
 
 after :pin => 24, :goes => :high do
   logger.log('Motion detected: LEFT')
-  strip.on(WSLight::Strip::DIRECTION_LEFT)
+  strip.on(:direction_left)
   while pin_left.on?
-  	strip.on(WSLight::Strip::DIRECTION_LEFT)
+  	strip.on(:direction_left)
   	sleep 1
   end
 end
