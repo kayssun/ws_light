@@ -18,7 +18,7 @@ module WSLight
           if i < length_red
             set << Color.new((rand(25) < 1 ? 0 : 255), 0, 0)
           elsif i < length_red + length_red_to_white
-            ratio = (i - length_red) / (length_red + length_red_to_white)
+            ratio = (i - length_red) / length_red_to_white.to_f
             set << red.mix(white, ratio)
           elsif i < length_red + length_red_to_white + length_white
             set << white
