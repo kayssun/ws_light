@@ -27,6 +27,8 @@ module WSLight
           end
         end
 
+        set.reverse! if rand(2) == 0
+
         type == :double ? set + set.reverse : set
       end
 

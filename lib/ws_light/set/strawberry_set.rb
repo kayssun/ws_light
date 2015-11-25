@@ -26,6 +26,8 @@ module WSLight
 
         set = sprinkle_nuts(set)
 
+        set.reverse! if rand(2) == 0
+
         type == :double ? set + set.reverse : set
       end
 
