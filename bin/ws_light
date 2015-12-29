@@ -32,10 +32,17 @@ logger.debug = DEBUG
 logger.filename = '/var/log/motion.log'
 logger.log 'Starting up'
 
+def unregister_pins
+  [PIN_RIGHT, PIN_LEFT].each do |pin|
+    File.open('/sys/class/gpio/unexport', 'w') { |f| f.write("#{pin}") }
+  end
+end
+
 # Trap ^C 
 Signal.trap('INT') {
   logger.log 'Shutting down'
   logger.write_log
+  unregister_pins
   exit
 }
  
@@ -43,6 +50,7 @@ Signal.trap('INT') {
 Signal.trap('TERM') {
   logger.log 'Shutting down'
   logger.write_log
+  unregister_pins
   exit
 }
 
