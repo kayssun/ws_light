@@ -5,7 +5,7 @@ module WSLight
     attr_accessor :entries, :interval, :entries, :debug, :filename
 
     def initialize
-      @filename = 'log.txt'
+      @filename = '/var/log/motion.log'
       @interval = 1800 # log interval in seconds
       @entries = []
       @last_write = Time.now
