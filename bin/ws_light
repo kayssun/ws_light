@@ -24,6 +24,9 @@ require 'bundler'
 require 'ws_light/strip'
 require 'ws_light/sd_logger'
 
+PIN_RIGHT = 23
+PIN_LEFT = 24
+
 logger = WSLight::SDLogger.new
 logger.debug = DEBUG
 logger.filename = '/var/log/motion.log'
@@ -46,25 +49,14 @@ Signal.trap('TERM') {
 strip = WSLight::Strip.new
 strip.debug = DEBUG
 
-pin_right = PiPiper::Pin.new(:pin => 22, :direction => :in)
-pin_left = PiPiper::Pin.new(:pin => 23, :direction => :in)
-
-after :pin => 23, :goes => :high do
+after :pin => PIN_RIGHT, :goes => :high do
   logger.log('Motion detected: RIGHT')
   strip.on(:direction_right)
-  while pin_right.on?
-  	strip.on(:direction_right)
-  	sleep 1
-  end
 end
 
-after :pin => 24, :goes => :high do
+after :pin => PIN_LEFT, :goes => :high do
   logger.log('Motion detected: LEFT')
   strip.on(:direction_left)
-  while pin_left.on?
-  	strip.on(:direction_left)
-  	sleep 1
-  end
 end
 
 PiPiper.wait
