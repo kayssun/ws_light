@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-DEBUG = true
-
 if ARGV[0] && ARGV[0]=='-b'
   case ARGV[1]
   when 'set'
@@ -24,16 +22,18 @@ require 'bundler'
 require 'ws_light/strip'
 require 'ws_light/sd_logger'
 
-PIN_RIGHT = 23
-PIN_LEFT = 24
+require 'ws_light/config'
+
+# Load config to overwrite default values
+@config = WSLight::Config.new.parse
 
 logger = WSLight::SDLogger.new
 logger.debug = DEBUG
-logger.filename = '/var/log/motion.log'
+logger.filename = @config['log_file']
 logger.log 'Starting up'
 
 def unregister_pins
-  [PIN_RIGHT, PIN_LEFT].each do |pin|
+  [@config['pin_right'], @config['pin_left']].each do |pin|
     File.open('/sys/class/gpio/unexport', 'w') { |f| f.write("#{pin}") }
   end
 end
@@ -55,15 +55,15 @@ Signal.trap('TERM') {
 }
 
 strip = WSLight::Strip.new
-strip.debug = DEBUG
+strip.debug = @config['debug']
 
-after :pin => PIN_RIGHT, :goes => :high do
-  logger.log('Motion detected: RIGHT')
+after :pin => @config['pin_right'], :goes => :high do
+  logger.log('Motion detected: RIGHT') if @config['track_motion_in_log']
   strip.on(:direction_right)
 end
 
-after :pin => PIN_LEFT, :goes => :high do
-  logger.log('Motion detected: LEFT')
+after :pin => @config['pin_left'], :goes => :high do
+  logger.log('Motion detected: LEFT') if @config['track_motion_in_log']
   strip.on(:direction_left)
 end
 
