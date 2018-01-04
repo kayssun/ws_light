@@ -31,18 +31,12 @@ module WSLight
         @full_length.times{ @set << BLACK }
         start = (@frame_count * VISIBLE_STARS / FRAMES_PER_STAR) % @max
         VISIBLE_STARS.times do |i|
-            draw_star(@stars[start + i], @frame_count - ((start - VISIBLE_STARS + 1 + i) * (FRAMES_PER_STAR.to_f / VISIBLE_STARS.to_f)).to_i)
+          draw_star(@stars[start + i], @frame_count - ((start - VISIBLE_STARS + 1 + i) * (FRAMES_PER_STAR.to_f / VISIBLE_STARS.to_f)).to_i)
         end
       end
 
       def draw_star(position, star_frame)
-        #(-3..3).each do |i|
-        #  white = brightness(i.abs, (star_frame - (FRAMES_PER_STAR/2)).abs)
-        #  @set[position + i] = Color.new(white, white, white)
-        #end
-        #return if star_frame < 0
-        white = brightness(0, (star_frame.to_f - (FRAMES_PER_STAR.to_f/2.0)).abs)
-        #puts "#{position}, #{star_frame}, #{(star_frame.to_f - (FRAMES_PER_STAR.to_f/2.0)).abs}, #{white}"
+        white = brightness((star_frame.to_f - (FRAMES_PER_STAR.to_f/2.0)).abs)
         @set[position] = Color.new(white, white, white)
       end
 
@@ -50,9 +44,7 @@ module WSLight
         @set[number]
       end
 
-      def brightness(led_distance, frame_distance)
-        #return 0 if led_distance > 3
-        #(2 ** ((3 - led_distance) * 3 - 1) - 1) * (1 - (frame_distance/(FRAMES_PER_STAR/2)))
+      def brightness(frame_distance)
         (255 * (1.0 - (frame_distance.to_f/(FRAMES_PER_STAR.to_f/2.0)))).to_i
       end
     end

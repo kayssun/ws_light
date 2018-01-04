@@ -19,7 +19,7 @@ module WSLight
       end
 
       def frame_data
-        frame.collect{|color| color.to_a}.flatten
+        frame.collect(&:to_a).flatten
       end
 
       def frame

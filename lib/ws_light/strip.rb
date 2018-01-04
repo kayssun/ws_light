@@ -33,7 +33,7 @@ module WSLight
     TYPE = :double
 
     TIMEOUT = 12
-    
+
     WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'
 
     FRAMES_PER_SECOND = 25
@@ -42,12 +42,12 @@ module WSLight
       WS2801.length(Strip::TYPE == :double ? Strip::LENGTH * 2 : Strip::LENGTH)
       WS2801.autowrite(true)
       self_test
-      @listen_thread = Thread.new { while true do check_timer; sleep 0.5; end }
+      @listen_thread = Thread.new { loop do check_timer; sleep 0.5; end }
       @last_event = Time.now - 3600 # set last event to a longer time ago
       @state = :state_off
       @debug = false
       @current_set = Set::ColorSet.new
-      @current_set.color = Color.new(0,0,0)
+      @current_set.color = Color.new(0, 0, 0)
     end
 
     def on(direction)
@@ -134,7 +134,7 @@ module WSLight
       animation.frames.times do |i|
         WS2801.strip(animation.frame_data(current_frame = i))
         WS2801.write
-        sleep (1.0/animation.frames_per_second) if animation.frames_per_second
+        sleep (1.0 / animation.frames_per_second) if animation.frames_per_second
         break if @state != beginning_state # Reverse shutting off when a new event is triggered
       end
 
@@ -143,7 +143,7 @@ module WSLight
         current_frame.times do |i|
           WS2801.strip(animation.frame_data(current_frame - i - 1))
           WS2801.write
-          sleep (1.0/animation.frames_per_second) if animation.frames_per_second
+          sleep (1.0 / animation.frames_per_second) if animation.frames_per_second
         end
         false
       else

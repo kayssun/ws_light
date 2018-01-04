@@ -14,13 +14,12 @@ module WSLight
 
         while @raspberries.size < RASPBERRY_COUNT do
           position = rand(@full_length)
-          @raspberries << position unless (at_end?(position) || between_strips?(position) || is_raspberry?(position))
+          @raspberries << position unless at_end?(position) || between_strips?(position) || raspberry?(position)
         end
       end
 
       def between_strips?(position)
-
-        @type == :double && ((@full_length/2 - 1 - RASPBERRY_SIZE)..(@full_length/2)).include?(position)
+        @type == :double && ((@full_length / 2 - 1 - RASPBERRY_SIZE)..(@full_length / 2)).cover?(position)
       end
 
       def at_end?(position)
@@ -35,13 +34,13 @@ module WSLight
         set = []
 
         @full_length.times do |i|
-          set << (is_raspberry?(i) ? COLOR_RASPBERRY : COLOR_SEMOLINA)
+          set << (raspberry?(i) ? COLOR_RASPBERRY : COLOR_SEMOLINA)
         end
 
         set
       end
 
-      def is_raspberry?(pixel)
+      def raspberry?(pixel)
         @raspberries.each do |raspberry|
           return true if pixel > raspberry && pixel < (raspberry + RASPBERRY_SIZE)
         end

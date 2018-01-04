@@ -27,11 +27,11 @@ module WSLight
 
       def pixel(number)
         number = @full_length - 1 - number if number >= @length
-        x = @frequency*(number+@frame_count)
+        x = @frequency * (number + @frame_count)
         Color.new(
-            (Math.sin(x)**2 * 127),
-            (Math.sin(x + 2.0*Math::PI/3.0)**2 * 127),
-            (Math.sin(x + 4.0*Math::PI/3.0)**2 * 127)
+          (Math.sin(x)**2 * 127),
+          (Math.sin(x + 2.0 * Math::PI / 3.0)**2 * 127),
+          (Math.sin(x + 4.0 * Math::PI / 3.0)**2 * 127)
         )
       end
 
