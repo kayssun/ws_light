@@ -11,6 +11,7 @@ require 'ws_light/animation/fade_animation'
 
 require 'ws_light/set/color_set'
 require 'ws_light/set/gradient_set'
+require 'ws_light/set/flowerbed_set'
 require 'ws_light/set/random_set'
 require 'ws_light/set/rainbow_set'
 require 'ws_light/set/strawberry_set'
