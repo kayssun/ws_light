@@ -1,0 +1,9 @@
+[Unit]
+Description=WS Light
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ws_light
+
+[Install]
+WantedBy=multi-user.target
