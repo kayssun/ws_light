@@ -4,15 +4,22 @@ require 'yaml'
 module WSLight
   # Reads config file and parses command parameters
   class Config
-    CONFIG_FILE = "#{ENV['HOME']}/.ws_light.yml"
+    CONFIG_FILE = "/etc/ws_light.conf"
 
     DEFAULT_OPTIONS = {
       'pin_right' => 23,
       'pin_left' => 24,
       'log_file' => '/var/log/motion.log',
       'track_motion_in_log' => true,
-      'debug' => false
-    }
+      'debug' => false,
+      'sensor_right_name' => 'motion_right',
+      'sensor_left_name' => 'motion_left',
+      'sensor_right_description' => 'Motion sensor right',
+      'sensor_left_description' => 'Motion sensor left',
+      'hass_integration' => false,
+      'hass_url' => '',
+      'hass_api_password' => ''
+    }.freeze
 
     def initialize
       @config = DEFAULT_OPTIONS.merge(yaml_options).merge(command_line_options)
