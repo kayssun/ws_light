@@ -72,6 +72,8 @@ module WSLight
         set = Set::WatermelonSet.new
       when 13..15
         set = Set::SemolinaSet.new
+      when 16..18
+        set = Set::FlowerbedSet.new
       else
         set = Set::GradientSet.new
         set.color_from = Color.random_from_set
