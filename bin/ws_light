@@ -26,15 +26,15 @@ require 'ws_light/hass'
 require 'ws_light/config'
 
 # Load config to overwrite default values
-@config = WSLight::Config.new.parse
+config = WSLight::Config.new.parse
 
 logger = WSLight::SDLogger.new
-logger.debug = DEBUG
-logger.filename = @config['log_file']
+logger.debug = false
+logger.filename = config['log_file']
 logger.log 'Starting up'
 
 def unregister_pins
-  [@config['pin_right'], @config['pin_left']].each do |pin|
+  [config['pin_right'], config['pin_left']].each do |pin|
     File.open('/sys/class/gpio/unexport', 'w') { |f| f.write("#{pin}") }
   end
 end
@@ -56,19 +56,19 @@ Signal.trap('TERM') {
 }
 
 strip = WSLight::Strip.new
-strip.debug = @config['debug']
-hass = Hass.new(@config['hass_url'], @config['hass_password'], logger)
+strip.debug = config['debug']
+hass = Hass.new(config['hass_url'], config['hass_password'], logger)
 
-after :pin => @config['pin_right'], :goes => :high do
-  logger.log('Motion detected: RIGHT') if @config['track_motion_in_log']
+after :pin => config['pin_right'], :goes => :high do
+  logger.log('Motion detected: RIGHT') if config['track_motion_in_log']
   strip.on(:direction_right)
-  hass.send_data(@config['sensor_right_name'], @config['sensor_right_description']) if @config['hass_integration']
+  hass.send_data(config['sensor_right_name'], config['sensor_right_description']) if config['hass_integration']
 end
 
-after :pin => @config['pin_left'], :goes => :high do
-  logger.log('Motion detected: LEFT') if @config['track_motion_in_log']
+after :pin => config['pin_left'], :goes => :high do
+  logger.log('Motion detected: LEFT') if config['track_motion_in_log']
   strip.on(:direction_left)
-  hass.send_data(@config['sensor_left_name'], @config['sensor_left_description']) if @config['hass_integration']
+  hass.send_data(config['sensor_left_name'], config['sensor_left_description']) if config['hass_integration']
 end
 
 PiPiper.wait
