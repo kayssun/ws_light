@@ -19,6 +19,7 @@ module WSLight
             set << Color.random_from_set
           else
             set << Color.by_name(:green)
+          end
         end
         set
       end
