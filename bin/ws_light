@@ -18,12 +18,16 @@ require 'pi_piper'
 
 include PiPiper
 
+require 'socket'
 require 'bundler'
 require 'ws_light/strip'
 require 'ws_light/sd_logger'
 require 'ws_light/hass'
 
 require 'ws_light/config'
+
+TELEGRAF_IP = '127.0.0.1'.freeze
+TELEGRAF_PORT = 8094
 
 # Load config to overwrite default values
 config = WSLight::Config.new.parse
@@ -59,14 +63,18 @@ strip = WSLight::Strip.new
 strip.debug = config['debug']
 hass = Hass.new(config['hass_url'], config['hass_password'], logger)
 
+socket = UDPSocket.new
+
 after :pin => config['pin_right'], :goes => :high do
   logger.log('Motion detected: RIGHT') if config['track_motion_in_log']
+  socket.send 'motion,room=hallway,sensor=right value=1', 0, TELEGRAF_IP, TELEGRAF_PORT
   strip.on(:direction_right)
   hass.send_data(config['sensor_right_name'], config['sensor_right_description']) if config['hass_integration']
 end
 
 after :pin => config['pin_left'], :goes => :high do
   logger.log('Motion detected: LEFT') if config['track_motion_in_log']
+  socket.send 'motion,room=hallway,sensor=left value=1', 0, TELEGRAF_IP, TELEGRAF_PORT
   strip.on(:direction_left)
   hass.send_data(config['sensor_left_name'], config['sensor_left_description']) if config['hass_integration']
 end
