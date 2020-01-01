@@ -44,7 +44,14 @@ module WSLight
       Set::WatermelonSet,
       Set::SemolinaSet,
       Set::FlowerbedSet
-    ]
+    ].freeze
+
+    # SPECIAL_SETS = [
+    #   Set::RainSet,
+    #   Set::FairSet,
+    #   Set::SunnySet,
+    #   Set::CloudySet
+    # ].freeze
 
     TIMEOUT = 12
 
@@ -117,7 +124,7 @@ module WSLight
     def choose_set
       return Set::StarSet.new if night?
 
-      return SPECIAL_SETS.sample.new if rand(6).zero?
+      return SPECIAL_SETS.sample.new if rand(8).zero?
 
       set = Set::GradientSet.new
       set.color_from = Color.random_from_set
