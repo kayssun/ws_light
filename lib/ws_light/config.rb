@@ -4,7 +4,7 @@ require 'yaml'
 module WSLight
   # Reads config file and parses command parameters
   class Config
-    CONFIG_FILE = "/etc/ws_light.conf"
+    CONFIG_FILE = '/etc/ws_light.conf'.freeze
 
     DEFAULT_OPTIONS = {
       'pin_right' => 23,
@@ -37,8 +37,8 @@ module WSLight
     end
 
     def yaml_options
-      if File.exist?CONFIG_FILE
-        ::YAML.load(File.read(CONFIG_FILE))
+      if File.exist? CONFIG_FILE
+        ::YAML.safe_load(File.read(CONFIG_FILE))
       else
         {}
       end

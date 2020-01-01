@@ -17,7 +17,7 @@ module WSLight
         @set_to.next_frame
 
         @set_from.full_length.times do |i|
-          set << @set_from.pixel(i).mix(@set_to.pixel(i), count.to_f/FADE_DURATION.to_f)
+          set << @set_from.pixel(i).mix(@set_to.pixel(i), count.to_f / FADE_DURATION.to_f)
         end
 
         set

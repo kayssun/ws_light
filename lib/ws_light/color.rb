@@ -1,16 +1,17 @@
 module WSLight
+  # Handles the red/green/blue value of a color
   class Color
     attr_accessor :r, :g, :b
 
     COLORS = {
-      pink: { r: 255, g: 16, b:32 },
-      red: { r: 255, g: 0, b: 0},
-      blue: { r: 0, g: 0, b: 255},
-      green: { r: 0, g: 255, b: 0},
-      cyan: { r: 0, g: 127, b: 127},
-      orange: {r: 255, g:70, b: 0},
-      yellow: {r: 255, g:220, b: 0},
-      purple: {r: 80, g:0, b: 180}
+      pink: { r: 255, g: 16, b: 32 },
+      red: { r: 255, g: 0, b: 0 },
+      blue: { r: 0, g: 0, b: 255 },
+      green: { r: 0, g: 255, b: 0 },
+      cyan: { r: 0, g: 127, b: 127 },
+      orange: { r: 255, g: 70, b: 0 },
+      yellow: { r: 255, g: 220, b: 0 },
+      purple: { r: 80, g: 0, b: 180 }
     }
 
     def initialize(r=0, g=0, b=0)
@@ -28,16 +29,16 @@ module WSLight
 
     def mix(other, ratio)
       Color.new(
-          (@r * (1-ratio) + other.r * ratio).to_i,
-          (@g * (1-ratio) + other.g * ratio).to_i,
-          (@b * (1-ratio) + other.b * ratio).to_i
+        (@r * (1 - ratio) + other.r * ratio).to_i,
+        (@g * (1 - ratio) + other.g * ratio).to_i,
+        (@b * (1 - ratio) + other.b * ratio).to_i
       )
     end
 
     def mix!(other, ratio)
-      @r = (@r * (1-ratio) + other.r * ratio).to_i
-      @g = (@g * (1-ratio) + other.g * ratio).to_i
-      @b = (@b * (1-ratio) + other.b * ratio).to_i
+      @r = (@r * (1 - ratio) + other.r * ratio).to_i
+      @g = (@g * (1 - ratio) + other.g * ratio).to_i
+      @b = (@b * (1 - ratio) + other.b * ratio).to_i
       self
     end
 
@@ -52,7 +53,7 @@ module WSLight
       elsif name == :black
         Color.new(0, 0, 0)
       else
-        fail "Cannot find color #{name}"
+        raise "Cannot find color #{name}"
       end
     end
 

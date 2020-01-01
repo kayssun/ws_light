@@ -10,7 +10,7 @@ module WSLight
       end
 
       def frame_data(count)
-        frame(count).collect{|color| color.to_a}.flatten
+        frame(count).collect(&:to_a).flatten
       end
 
       def frames_per_second

@@ -7,8 +7,8 @@ module WSLight
       attr_accessor :color_from, :color_to
 
       def init
-        @color_from = Color.new(0,0,0)
-        @color_to = Color.new(255,255,255)
+        @color_from = Color.new(0, 0, 0)
+        @color_to = Color.new(255, 255, 255)
       end
 
       def frame
@@ -28,7 +28,7 @@ module WSLight
 
       def pixel(number)
         number = @full_length - 1 - number if number >= @length
-        @color_from.mix(@color_to, number.to_f/(@length-1))
+        @color_from.mix(@color_to, number.to_f / (@length - 1))
       end
     end
   end

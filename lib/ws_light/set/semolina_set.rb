@@ -12,7 +12,7 @@ module WSLight
       def init
         @raspberries = []
 
-        while @raspberries.size < RASPBERRY_COUNT do
+        while @raspberries.size < RASPBERRY_COUNT
           position = rand(@full_length)
           @raspberries << position unless at_end?(position) || between_strips?(position) || raspberry?(position)
         end

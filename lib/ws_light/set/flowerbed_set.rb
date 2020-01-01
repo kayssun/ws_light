@@ -15,11 +15,11 @@ module WSLight
       def generate_set
         set = []
         @full_length.times do
-          if rand(8) == 0
-            set << Color.random_from_set
-          else
-            set << Color.by_name(:green)
-          end
+          set << if rand(8).zero?
+                   Color.random_from_set
+                 else
+                   Color.by_name(:green)
+                 end
         end
         set
       end

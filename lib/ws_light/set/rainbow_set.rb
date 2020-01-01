@@ -34,7 +34,6 @@ module WSLight
           (Math.sin(x + 4.0 * Math::PI / 3.0)**2 * 127)
         )
       end
-
     end
   end
 end

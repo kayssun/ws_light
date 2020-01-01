@@ -26,7 +26,7 @@ module WSLight
 
         set = sprinkle_nuts(set)
 
-        set.reverse! if rand(2) == 0
+        set.reverse! if rand(2).zero?
 
         type == :double ? set + set.reverse : set
       end
@@ -35,7 +35,7 @@ module WSLight
         length_red = (LENGTH_RED * @length).to_i
         distance = 0
         while distance < length_red - 21
-          distance += 15 + rand(5)
+          distance += rand(5..20)
           set[distance] = COLOR_NUT
         end
 

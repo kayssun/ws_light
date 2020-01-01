@@ -19,8 +19,6 @@ require 'ws_light/set/watermelon_set'
 require 'ws_light/set/semolina_set'
 require 'ws_light/set/star_set'
 
-
-
 # Ideas
 # - Fire?
 # Config file
@@ -35,7 +33,7 @@ module WSLight
 
     TIMEOUT = 12
 
-    WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'
+    WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'.freeze
 
     FRAMES_PER_SECOND = 25
 

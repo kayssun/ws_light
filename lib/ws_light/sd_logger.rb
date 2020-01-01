@@ -2,7 +2,7 @@ module WSLight
   # Provides a logger which writes only in long intervals, thus reducing write access to the cd card
   # (out data is not that crucial)
   class SDLogger
-    attr_accessor :entries, :interval, :entries, :debug, :filename
+    attr_accessor :entries, :interval, :debug, :filename
 
     def initialize
       @filename = '/var/log/motion.log'
@@ -23,7 +23,8 @@ module WSLight
 
     def write_log
       return if @entries.empty?
-      file = File.open(@filename, File.exists?(@filename) ? 'a' : 'w')
+
+      file = File.open(@filename, File.exist?(@filename) ? 'a' : 'w')
       @entries.each do |entry|
         file.puts(entry[:time].to_s + ', ' + entry[:text])
       end
@@ -35,6 +36,5 @@ module WSLight
     def timeout?
       (Time.now - @last_write) > @interval
     end
-
   end
 end
