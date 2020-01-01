@@ -22,7 +22,3 @@ module WSLight
     end
   end
 end
-
-
-dd
-Guido Laßmann <guido.lassmann@t-online.de>
