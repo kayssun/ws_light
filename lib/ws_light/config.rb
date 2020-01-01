@@ -53,11 +53,11 @@ module WSLight
           options['verbose'] = v
         end
 
-        opts.on('-l NUMBER', '--left-pin NUMBER', 'Pin number to which the left motion detector is connected') do |number|
+        opts.on('-l NUMBER', '--left-pin NUMBER', 'Pin to which the left motion detector is connected') do |number|
           options['pin_left'] = number
         end
 
-        opts.on('-r NUMBER', '--right-pin NUMBER', 'Pin number to which the right motion detector is connected') do |number|
+        opts.on('-r NUMBER', '--right-pin NUMBER', 'Pin to which the right motion detector is connected') do |number|
           options['pin_right'] = number
         end
 

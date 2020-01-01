@@ -16,7 +16,6 @@ module WSLight
 
         length_red = (LENGTH_RED * @length).to_i
 
-
         color_strawberry = Color.new(255, 7, 15)
         color_leaves = Color.new(15, 191, 15)
 

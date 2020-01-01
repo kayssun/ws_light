@@ -14,23 +14,28 @@ module WSLight
 
       def generate_set
         set = []
-        sun_position = case rand(4)
+        position = sun_position
+        @full_length.times do |i|
+          set << if position.include?(i)
+                   Color.by_name(:yellow)
+                 else
+                   Color.by_name(:blue)
+                 end
+        end
+        set
+      end
+
+      def sun_position
+        case rand(4)
         when 0
           10..40
         when 1
           140..170
         when 2
           190..220
-        when 3
+        else
           300..330
-        @full_length.times do |i|
-          if sun_position.include?(i)
-            set << Color.by_name(:yellow)
-          else
-            set << Color.by_name(:blue)
-          end
         end
-        set
       end
     end
   end

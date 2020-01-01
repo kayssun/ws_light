@@ -12,7 +12,7 @@ module WSLight
       orange: { r: 255, g: 70, b: 0 },
       yellow: { r: 255, g: 220, b: 0 },
       purple: { r: 80, g: 0, b: 180 }
-    }
+    }.freeze
 
     def initialize(r=0, g=0, b=0)
       @r = r > 255 ? 255 : r.to_i

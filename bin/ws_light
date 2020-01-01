@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-if ARGV[0] && ARGV[0]=='-b'
+if ARGV[0] && ARGV[0] == '-b'
   case ARGV[1]
   when 'set'
     require 'ws_light/benchmark/set_benchmark'
@@ -39,7 +39,7 @@ logger.log 'Starting up'
 
 def unregister_pins(pins)
   pins.each do |pin|
-    File.open('/sys/class/gpio/unexport', 'w') { |f| f.write("#{pin}") }
+    File.open('/sys/class/gpio/unexport', 'w') { |f| f.write(pin.to_s) }
   end
 end
 
@@ -65,14 +65,14 @@ hass = Hass.new(config['hass_url'], config['hass_password'], logger)
 
 socket = UDPSocket.new
 
-after :pin => config['pin_right'], :goes => :high do
+after pin: config['pin_right'], goes: :high do
   logger.log('Motion detected: RIGHT') if config['track_motion_in_log']
   socket.send 'motion,room=hallway,sensor=right value=1', 0, TELEGRAF_IP, TELEGRAF_PORT
   strip.on(:direction_right)
   hass.send_data(config['sensor_right_name'], config['sensor_right_description']) if config['hass_integration']
 end
 
-after :pin => config['pin_left'], :goes => :high do
+after pin: config['pin_left'], goes: :high do
   logger.log('Motion detected: LEFT') if config['track_motion_in_log']
   socket.send 'motion,room=hallway,sensor=left value=1', 0, TELEGRAF_IP, TELEGRAF_PORT
   strip.on(:direction_left)
@@ -80,4 +80,3 @@ after :pin => config['pin_left'], :goes => :high do
 end
 
 PiPiper.wait
-	

@@ -14,7 +14,7 @@ module WSLight
 
       def generate_set
         set = []
-        @full_length.times do |i|
+        @full_length.times do
           set << Color.new(8, 8, 8)
         end
         set

@@ -41,7 +41,7 @@ module WSLight
       WS2801.length(Strip::TYPE == :double ? Strip::LENGTH * 2 : Strip::LENGTH)
       WS2801.autowrite(true)
       self_test
-      @listen_thread = Thread.new { loop do check_timer; sleep 0.5; end }
+      @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
       @last_event = Time.now - 3600 # set last event to a longer time ago
       @state = :state_off
       @debug = false
@@ -135,7 +135,7 @@ module WSLight
       animation.frames.times do |i|
         WS2801.strip(animation.frame_data(current_frame = i))
         WS2801.write
-        sleep (1.0 / animation.frames_per_second) if animation.frames_per_second
+        sleep(1.0 / animation.frames_per_second) if animation.frames_per_second
         break if @state != beginning_state # Reverse shutting off when a new event is triggered
       end
 
@@ -144,7 +144,7 @@ module WSLight
         current_frame.times do |i|
           WS2801.strip(animation.frame_data(current_frame - i - 1))
           WS2801.write
-          sleep (1.0 / animation.frames_per_second) if animation.frames_per_second
+          sleep(1.0 / animation.frames_per_second) if animation.frames_per_second
         end
         false
       else
@@ -158,7 +158,7 @@ module WSLight
       while @state == current_state
         WS2801.strip(set.frame_data)
         WS2801.write
-        sleep 1.0/FRAMES_PER_SECOND.to_f
+        sleep 1.0 / FRAMES_PER_SECOND.to_f
         i += 1
       end
     end

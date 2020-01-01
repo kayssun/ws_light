@@ -4,7 +4,6 @@ module WSLight
   module Animation
     # Slides from one set to another from right to left (obviously depending on the hardware setup)
     class SlideRightAnimation < BaseAnimation
-
       def frames
         @set_from.length + 1 # one for each led plus one for all zero
       end
