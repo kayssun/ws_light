@@ -37,27 +37,27 @@ logger.debug = false
 logger.filename = config['log_file']
 logger.log 'Starting up'
 
-def unregister_pins
-  [config['pin_right'], config['pin_left']].each do |pin|
+def unregister_pins(pins)
+  pins.each do |pin|
     File.open('/sys/class/gpio/unexport', 'w') { |f| f.write("#{pin}") }
   end
 end
 
-# Trap ^C 
-Signal.trap('INT') {
+# Trap ^C
+Signal.trap('INT') do
   logger.log 'Shutting down'
   logger.write_log
-  unregister_pins
+  unregister_pins([config['pin_right'], config['pin_left']])
   exit
-}
- 
+end
+
 # Trap `kill `
-Signal.trap('TERM') {
+Signal.trap('TERM') do
   logger.log 'Shutting down'
   logger.write_log
-  unregister_pins
+  unregister_pins([config['pin_right'], config['pin_left']])
   exit
-}
+end
 
 strip = WSLight::Strip.new
 strip.debug = config['debug']
