@@ -1,4 +1,4 @@
-require 'ws2801'
+require 'spi'
 require 'ws_light/color'
 require 'pp'
 require 'date'
@@ -30,6 +30,7 @@ module WSLight
 
     LENGTH = 160
     TYPE = :double
+    FULL_LENGTH = 320
 
     TIMEOUT = 12
 
@@ -38,8 +39,8 @@ module WSLight
     FRAMES_PER_SECOND = 25
 
     def initialize
-      WS2801.length(Strip::TYPE == :double ? Strip::LENGTH * 2 : Strip::LENGTH)
-      WS2801.autowrite(true)
+      @spi = SPI.new(device: '/dev/spidev0.0')
+      @spi.speed = 500000
       self_test
       @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
       @last_event = Time.now - 3600 # set last event to a longer time ago
@@ -133,8 +134,7 @@ module WSLight
       beginning_state = @state
 
       animation.frames.times do |i|
-        WS2801.strip(animation.frame_data(current_frame = i))
-        WS2801.write
+        write(animation.frame_data(current_frame = i))
         sleep(1.0 / animation.frames_per_second) if animation.frames_per_second
         break if @state != beginning_state # Reverse shutting off when a new event is triggered
       end
@@ -142,8 +142,7 @@ module WSLight
       # This is run when the animation is reversed
       if (current_frame + 1) < animation.frames
         current_frame.times do |i|
-          WS2801.strip(animation.frame_data(current_frame - i - 1))
-          WS2801.write
+          write(animation.frame_data(current_frame - i - 1))
           sleep(1.0 / animation.frames_per_second) if animation.frames_per_second
         end
         false
@@ -156,8 +155,7 @@ module WSLight
       current_state = @state
       i = start_frame
       while @state == current_state
-        WS2801.strip(set.frame_data)
-        WS2801.write
+        write(set.frame_data)
         sleep 1.0 / FRAMES_PER_SECOND.to_f
         i += 1
       end
@@ -169,26 +167,30 @@ module WSLight
     end
 
     def shutdown
-      WS2801.set(r: 0, g: 0, b: 0)
+      write([0, 0, 0] * FULL_LENGTH)
     end
 
     def self_test
-      WS2801.set(r: 0, g: 0, b: 255)
+      write([0, 0, 255] * FULL_LENGTH)
       sleep 1
-      WS2801.set(r: 0, g: 255, b: 0)
+      write([0, 255, 0] * FULL_LENGTH)
       sleep 1
-      WS2801.set(r: 255, g: 0, b: 0)
+      write([255, 0, 0] * FULL_LENGTH)
       sleep 1
-      WS2801.set(r: 0, g: 0, b: 0)
+      write([0, 0, 0] * FULL_LENGTH)
     end
 
     def check_timer
-      WS2801.set(r: 0, g: 0, b: 0) if @state == :state_off
+      write([0, 0, 0] * FULL_LENGTH) if @state == :state_off
       off if timeout?
     end
 
     def timeout?
       @last_event < (Time.now - TIMEOUT)
+    end
+
+    def write(data)
+      @spi.xfer(txdata: data)
     end
   end
 end
