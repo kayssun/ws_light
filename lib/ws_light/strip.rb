@@ -19,6 +19,11 @@ require 'ws_light/set/watermelon_set'
 require 'ws_light/set/semolina_set'
 require 'ws_light/set/star_set'
 
+require 'ws_light/set/weather/cloudy_set'
+require 'ws_light/set/weather/fair_set'
+require 'ws_light/set/weather/rain_set'
+require 'ws_light/set/weather/sunny_set'
+
 # Ideas
 # - Fire?
 # Config file
@@ -32,6 +37,15 @@ module WSLight
     TYPE = :double
     FULL_LENGTH = 320
 
+    SPECIAL_SETS = [
+      Set::RainbowSet,
+      Set::RandomSet,
+      Set::StrawberrySet,
+      Set::WatermelonSet,
+      Set::SemolinaSet,
+      Set::FlowerbedSet
+    ]
+
     TIMEOUT = 12
 
     WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=Hannover,de'.freeze
@@ -40,7 +54,7 @@ module WSLight
 
     def initialize
       @spi = SPI.new(device: '/dev/spidev0.0')
-      @spi.speed = 500000
+      @spi.speed = 500_000
       self_test
       @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
       @last_event = Time.now - 3600 # set last event to a longer time ago
@@ -61,26 +75,7 @@ module WSLight
       @direction = direction
       @state = :state_starting_up
 
-      case rand(100)
-      when 0..3
-        set = Set::RainbowSet.new
-      when 4..6
-        set = Set::RandomSet.new
-      when 7..9
-        set = Set::StrawberrySet.new
-      when 10..12
-        set = Set::WatermelonSet.new
-      when 13..15
-        set = Set::SemolinaSet.new
-      when 16..18
-        set = Set::FlowerbedSet.new
-      else
-        set = Set::GradientSet.new
-        set.color_from = Color.random_from_set
-        set.color_to = Color.random_from_set
-      end
-
-      set = Set::StarSet.new if night?
+      set = choose_set
 
       puts "Set #{set.class}" if @debug
 
@@ -117,6 +112,17 @@ module WSLight
       end
 
       puts "finished shutting off: #{Time.now.to_f}" if @debug
+    end
+
+    def choose_set
+      return Set::StarSet.new if night?
+
+      return SPECIAL_SETS.sample.new if rand(6).zero?
+
+      set = Set::GradientSet.new
+      set.color_from = Color.random_from_set
+      set.color_to = Color.random_from_set
+      set
     end
 
     def animation_for(direction)

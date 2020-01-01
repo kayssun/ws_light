@@ -3,7 +3,7 @@ require 'ws_light/set/color_set'
 module WSLight
   module Set
     # Creates a set with all random colors
-    class CloudySet < ColorSet
+    class FairSet < ColorSet
       def frame
         @set ||= generate_set
       end
