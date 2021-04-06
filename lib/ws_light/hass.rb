@@ -9,10 +9,15 @@ class Hass
     @logger = logger
   end
 
-  def notify(state = true, sensor_name = 'motion', friendly_name = 'Motion Sensor')
+  def notify(sensor_name = 'motion', friendly_name = 'Motion Sensor')
     url = "#{@url}/api/states/sensor.#{sensor_name}"
-    data = { 'state' => (state ? 'on' : 'off'), 'attributes' => { 'friendly_name' => friendly_name } }.to_json
-    Thread.new { send_data(url, data) }
+    on_data = { 'state' => 'on', 'attributes' => { 'friendly_name' => friendly_name } }.to_json
+    off_data = { 'state' => 'off', 'attributes' => { 'friendly_name' => friendly_name } }.to_json
+    Thread.new do
+      send_data(url, on_data)
+      sleep 5
+      send_data(url, off_data)
+    end
   end
 
   def send_data(url, data)
