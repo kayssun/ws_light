@@ -18,6 +18,8 @@ require 'ws_light/set/strawberry_set'
 require 'ws_light/set/watermelon_set'
 require 'ws_light/set/semolina_set'
 require 'ws_light/set/star_set'
+require 'ws_light/set/lgbtqia_flag_set'
+
 
 require 'ws_light/set/weather/cloudy_set'
 require 'ws_light/set/weather/fair_set'
@@ -122,6 +124,8 @@ module WSLight
     end
 
     def choose_set
+      return LGBTQIAFlagSet.new
+      
       return Set::StarSet.new if night?
 
       return SPECIAL_SETS.sample.new if rand(8).zero?
