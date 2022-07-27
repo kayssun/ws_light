@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'socket'
+require 'bundler'
+require 'ws_light/strip'
+
+require 'ws_light/config'
+
+# Load config to overwrite default values
+config = WSLight::Config.new.parse
+
+def unregister_pins(pins)
+  pins.each do |pin|
+    File.open('/sys/class/gpio/unexport', 'w') { |f| f.write(pin.to_s) }
+  end
+end
+
+# Trap ^C
+Signal.trap('INT') do
+  unregister_pins([config['pin_right'], config['pin_left']])
+  exit
+end
+
+# Trap `kill `
+Signal.trap('TERM') do
+  unregister_pins([config['pin_right'], config['pin_left']])
+  exit
+end
+
+strip = WSLight::Strip.new
+strip.debug = config['debug']
+strip.on(:direction_right)
