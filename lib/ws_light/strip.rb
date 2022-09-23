@@ -64,7 +64,7 @@ module WSLight
     def initialize
       @spi = SPI.new(device: '/dev/spidev0.0')
       @spi.speed = 500_000
-      self_test
+      # self_test
       @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
       @last_event = Time.now - 3600 # set last event to a longer time ago
       @state = :state_off
@@ -87,7 +87,7 @@ module WSLight
       set = choose_set
 
       puts "Set #{set.class}" if @debug
-
+      
       animation = animation_for(direction).new(@current_set, set)
 
       animate(animation)
@@ -97,6 +97,19 @@ module WSLight
 
       # Move show() into background, so we can accept new events on the main thread
       Thread.new { show(@current_set, animation.frames) }
+    end
+
+    def on_with_color(color)
+      puts "Color: #{color}"
+      @last_event = Time.now
+      set = Set::ColorSet.new
+      set.color = color
+      @current_set = set
+
+      @state = :state_on
+
+      # Move show() into background, so we can accept new events on the main thread
+      Thread.new { show(@current_set, 50) }
     end
 
     def off(direction = nil)
@@ -124,8 +137,8 @@ module WSLight
     end
 
     def choose_set
-      return LGBTQIAFlagSet.new
-      
+      return Set::LGBTQIAFlagSet.new
+
       return Set::StarSet.new if night?
 
       return SPECIAL_SETS.sample.new if rand(8).zero?

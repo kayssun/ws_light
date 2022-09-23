@@ -3,6 +3,7 @@
 require 'socket'
 require 'bundler'
 require 'ws_light/strip'
+require 'ws_light/color'
 
 require 'ws_light/config'
 
@@ -29,4 +30,9 @@ end
 
 strip = WSLight::Strip.new
 strip.debug = config['debug']
-strip.on(:direction_right)
+if ARGV[0].to_i + ARGV[1].to_i + ARGV[2].to_i > 0
+  strip.on_with_color(WSLight::Color.new(ARGV[0].to_i, ARGV[1].to_i, ARGV[2].to_i))
+else
+  strip.on(:direction_right)
+end
+sleep 1
