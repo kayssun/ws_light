@@ -137,11 +137,11 @@ module WSLight
     end
 
     def choose_set
-      return Set::LGBTQIAFlagSet.new
-
       return Set::StarSet.new if night?
 
       return SPECIAL_SETS.sample.new if rand(8).zero?
+
+      return Set::LGBTQIAFlagSet.new if rand(2).zero?
 
       set = Set::GradientSet.new
       set.color_from = Color.random_from_set
