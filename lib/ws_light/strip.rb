@@ -1,4 +1,9 @@
-require 'spi'
+if FAKE_SPI
+  require 'ws_light/fake_strip/spi_color'
+else
+  require 'spi'
+end
+
 require 'ws_light/color'
 require 'pp'
 require 'date'
@@ -62,8 +67,13 @@ module WSLight
     FRAMES_PER_SECOND = 25
 
     def initialize
-      @spi = SPI.new(device: '/dev/spidev0.0')
+      if FAKE_SPI
+        @spi = SPI.new
+      else
+        @spi = SPI.new(device: '/dev/spidev0.0')
+      end
       @spi.speed = 500_000
+      
       # self_test
       @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
       @last_event = Time.now - 3600 # set last event to a longer time ago
