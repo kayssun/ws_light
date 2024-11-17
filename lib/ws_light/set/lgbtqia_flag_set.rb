@@ -81,9 +81,9 @@ module WSLight
 
       def pixel(number)
         number = @full_length - 1 - number if number >= @length
-        block_length = @length / FLAGS[@flag].length
+        block_length = @length / FLAGS[@flag].length.to_f
         block_number = number / block_length
-        FLAGS[@flag][block_number]
+        FLAGS[@flag][block_number.to_i]
       end
     end
   end
