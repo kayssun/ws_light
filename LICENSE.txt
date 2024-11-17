@@ -1,4 +1,4 @@
-Copyright (c) 2015 Gerrit Visscher
+Copyright (c) 2015 Audra Visscher
 
 MIT License
 
