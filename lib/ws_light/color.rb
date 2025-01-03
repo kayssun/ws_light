@@ -11,7 +11,8 @@ module WSLight
       cyan: { r: 0, g: 127, b: 127 },
       orange: { r: 255, g: 70, b: 0 },
       yellow: { r: 255, g: 220, b: 0 },
-      purple: { r: 80, g: 0, b: 180 }
+      purple: { r: 80, g: 0, b: 180 },
+      black: { r: 0, g: 0, b: 0 }
     }.freeze
 
     def initialize(r=0, g=0, b=0)
@@ -24,7 +25,7 @@ module WSLight
     end
 
     def to_a
-      [@b, @g, @r]
+      [@r, @g, @b]
     end
 
     def mix(other, ratio)

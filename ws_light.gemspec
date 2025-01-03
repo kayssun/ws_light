@@ -16,8 +16,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.7'
+  spec.add_development_dependency 'bundler', '~> 2.4'
+  spec.add_development_dependency 'webrick', '~> 1.9'
 
   spec.add_runtime_dependency 'pi_piper', '~>2'
   spec.add_runtime_dependency 'spi', '~>0.1'
+  spec.add_runtime_dependency 'sinatra', '~>4.0'
+  spec.add_runtime_dependency 'rackup', '~>2.2'
 end

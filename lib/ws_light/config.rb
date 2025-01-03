@@ -18,12 +18,17 @@ module WSLight
       'sensor_left_description' => 'Motion sensor left',
       'hass_integration' => false,
       'hass_url' => '',
-      'hass_api_password' => ''
+      'hass_api_password' => '',
+      'fake_spi' => true
     }.freeze
 
     def initialize
-      @config = DEFAULT_OPTIONS.merge(yaml_options).merge(command_line_options)
-      store_options
+      if File.exist? CONFIG_FILE
+        @config = DEFAULT_OPTIONS.merge(yaml_options).merge(command_line_options)
+        store_options
+      else
+        @config = DEFAULT_OPTIONS.merge(command_line_options)
+      end
     end
 
     def store_options

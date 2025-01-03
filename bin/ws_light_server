@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require 'ws_light/config'
+
+# Load config to overwrite default values
+config = WSLight::Config.new.parse
+FAKE_SPI = config['fake_spi']
+
+require 'sinatra'
+require 'ws_light/strip'
+require 'ws_light/color'
+
+strip = WSLight::Strip.new
+
+get '/on/:direction' do
+  if params[:direction] == 'left'
+    Thread.new { strip.on(:direction_left) }
+  else
+    Thread.new { strip.on(:direction_right) }
+  end
+  'on'
+end
+
+get '/off' do
+  Thread.new { strip.off }
+  'off'
+end
+
+get '/critical' do
+  Thread.new { strip.on_with_color(WSLight::Color.by_name(:red)) }
+  'critical'
+end
+
+get '/warning' do
+  Thread.new { strip.on_with_color(WSLight::Color.by_name(:orange)) }
+  'warning'
+end
+
+get '/okay' do
+  Thread.new { strip.on_with_color(WSLight::Color.by_name(:green)) }
+  'okay'
+end
+
+get '/previous' do
+  Thread.new { strip.previous_set }
+  'previous'
+end

@@ -1,5 +1,5 @@
 if FAKE_SPI
-  require 'ws_light/fake_strip/spi_color'
+  require 'ws_light/fake_spi/spi_color'
 else
   require 'spi'
 end
@@ -76,6 +76,7 @@ module WSLight
       
       # self_test
       @listen_thread = Thread.new { loop { check_timer; sleep 0.5; } }
+      @background_thread = Thread.new {}
       @last_event = Time.now - 3600 # set last event to a longer time ago
       @state = :state_off
       @debug = false
@@ -106,12 +107,13 @@ module WSLight
       @state = :state_on
 
       # Move show() into background, so we can accept new events on the main thread
-      Thread.new { show(@current_set, animation.frames) }
+      @background_thread.kill if @background_thread.alive?
+      @background_thread = Thread.new { show(@current_set, animation.frames) }
     end
 
     def on_with_color(color)
-      puts "Color: #{color}"
       @last_event = Time.now
+      @previous_set = @current_set
       set = Set::ColorSet.new
       set.color = color
       @current_set = set
@@ -119,7 +121,14 @@ module WSLight
       @state = :state_on
 
       # Move show() into background, so we can accept new events on the main thread
-      Thread.new { show(@current_set, 50) }
+      @background_thread.kill if @background_thread.alive?
+      @background_thread = Thread.new { show(@current_set, 50) }
+    end
+
+    def previous_set
+      @current_set = @previous_set
+      @background_thread.kill if @background_thread.alive?
+      @background_thread = Thread.new { show(@current_set, 50) }
     end
 
     def off(direction = nil)
@@ -140,7 +149,8 @@ module WSLight
         @current_set = set
       else
         @state = :state_on
-        Thread.new { show(@current_set, animation.frames) }
+        @background_thread.kill if @background_thread.alive?
+        @background_thread = Thread.new { show(@current_set, animation.frames) }
       end
 
       puts "finished shutting off: #{Time.now.to_f}" if @debug
